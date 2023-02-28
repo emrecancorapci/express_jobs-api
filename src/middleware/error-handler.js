@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import CustomAPIError from '../errors/custom-api.js';
 
-export default (err, req, res, next) => {
+export default (err, req, res) => {
   if (err instanceof CustomAPIError) {
     return res.status(err.statusCode).json({ msg: err.message });
   }

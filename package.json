@@ -1,12 +1,12 @@
 {
   "name": "4_jobs-api",
   "version": "0.0.1",
-  "description": "The starter is a copy of jobs-api final project, just with additional data.",
-  "main": "src\\server.js",
+  "description": "",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
     "start": "nodemon src/server.js",
-    "test": "test"
+    "lint": "eslint --config=./.eslintrc.json src/**/**/*.js"
   },
   "author": "",
   "license": "MIT",
