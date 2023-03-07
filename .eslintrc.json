@@ -31,6 +31,7 @@
     "arrow-body-style": "warn",
     "no-unused-vars": "warn",
     "no-useless-constructor": "warn",
-    "no-console": "off"
+    "no-console": "off",
+    "no-underscore-dangle": "off"
   }
 }
