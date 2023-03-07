@@ -1,8 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import argon2 from 'argon2';
+import jwt from 'jsonwebtoken';
 
 import BadRequest from '../errors/bad-request.js';
-
 import User from '../models/User.js';
 import hashingConfig from '../config/hashingConfig.js';
 
@@ -12,13 +12,16 @@ export const register = async (req, res) => {
     throw BadRequest('You cannot leave empty fields.');
   }
 
-  // const hashedPassword = await argon2.hash(password);
+  const user = await User.create({ name, email, password });
 
-  const user = { name, email, password };
+  if (!user) {
+    throw BadRequest('Something went wrong.');
+  }
 
-  const response = await User.create(user);
-
-  res.status(StatusCodes.CREATED).json(response);
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+  res.status(StatusCodes.CREATED).json({ name: user.name, token });
 };
 
 export const login = async (req, res) => {
@@ -44,5 +47,8 @@ export const login = async (req, res) => {
     throw BadRequest('Invalid credentials.');
   }
 
-  res.send(user);
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+  res.status(StatusCodes.OK).json({ name: user.name, token });
 };
