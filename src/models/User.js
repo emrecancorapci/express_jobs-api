@@ -1,4 +1,8 @@
 import mongoose from 'mongoose';
+import argon2 from 'argon2';
+import crypto from 'crypto';
+
+import hashingConfig from '../config/hashingConfig.js';
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -21,6 +25,15 @@ const UserSchema = new mongoose.Schema({
     required: [true, 'Password cannot be empty.'],
     minlength: 6,
   },
+});
+
+UserSchema.pre('save', async function () {
+  const user = this;
+  if (user.isModified('password')) {
+    const salt = crypto.randomBytes(16);
+    user.password = await argon2.hash(user.password, ...hashingConfig, salt);
+    console.log(user.password);
+  }
 });
 
 export default mongoose.model('User', UserSchema);
