@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import argon2 from 'argon2';
 import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
 
 import hashingConfig from '../config/hashingConfig.js';
 
@@ -35,5 +36,16 @@ UserSchema.pre('save', async function () {
     console.log(user.password);
   }
 });
+
+UserSchema.methods.comparePassword = async function (password) {
+  const user = this;
+  return argon2.verify(user.password, password, hashingConfig);
+};
+
+UserSchema.methods.generateToken = async function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_LIFETIME,
+  });
+};
 
 export default mongoose.model('User', UserSchema);
