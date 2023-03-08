@@ -32,8 +32,7 @@ UserSchema.pre('save', async function pre() {
   const user = this;
   if (user.isModified('password')) {
     const salt = crypto.randomBytes(16);
-    user.password = await argon2.hash(user.password, ...hashingConfig, salt);
-    console.log(user.password);
+    user.password = await argon2.hash(user.password, hashingConfig, salt);
   }
 });
 
@@ -43,9 +42,14 @@ UserSchema.methods.comparePassword = async function comparePassword(password) {
 };
 
 UserSchema.methods.generateToken = async function generateToken() {
-  return jwt.sign({ id: this._id, name: this.name }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_LIFETIME,
-  });
+  const token = jwt.sign(
+    { id: this._id, name: this.name },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_LIFETIME,
+    }
+  );
+  return token;
 };
 
 export default mongoose.model('User', UserSchema);

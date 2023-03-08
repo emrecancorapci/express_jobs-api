@@ -16,7 +16,7 @@ export const register = async (req, res) => {
     throw new BadRequest('Something went wrong.');
   }
 
-  const token = user.generateToken();
+  const token = await user.generateToken();
   res.status(StatusCodes.CREATED).json({ name: user.name, token });
 };
 
