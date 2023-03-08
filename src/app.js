@@ -5,8 +5,8 @@ import authentication from './middleware/authentication.js';
 import notFoundMiddleware from './middleware/not-found.js';
 import errorHandlerMiddleware from './middleware/error-handler.js';
 
-import authRouter from './routes/auth.js';
-import jobsRouter from './routes/jobs.js';
+import authRouter from './routes/authRoute.js';
+import jobsRouter from './routes/jobsRoute.js';
 
 const app = Express();
 
