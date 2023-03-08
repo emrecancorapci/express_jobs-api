@@ -28,7 +28,6 @@ export const login = async (req, res) => {
   }
 
   const user = await User.findOne({ email });
-
   if (!user) {
     throw BadRequest('Invalid credentials.');
   }
