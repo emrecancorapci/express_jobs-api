@@ -4,9 +4,11 @@ import NotFoundError from '../errors/not-found.js';
 import Job from '../models/Job.js';
 
 export const getAllJobs = async (req, res) => {
-  const { user } = res;
+  const {
+    user: { id },
+  } = req;
 
-  const jobs = await Job.find({ createdBy: user.id });
+  const jobs = await Job.find({ createdBy: id });
   res.status(StatusCodes.OK).json(jobs);
 };
 export const getJob = async (req, res) => {
