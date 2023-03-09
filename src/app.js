@@ -26,6 +26,8 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 
+app.use(Express.static('../public'));
+
 app.use('/api/v1/Auth', authRouter);
 app.use('/api/v1/Jobs', authentication, jobsRouter);
 
